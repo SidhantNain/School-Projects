@@ -1,0 +1,415 @@
+                                               # MySQL With Python
+'''
+TOPIC = ELECTRONICS DATABASE
+
+
+DATABASE NAME = IMP
+TABLE NAME = COMP
+MADE BY = SIDHANT NAIN
+CLASS = 12-E
+'''
+
+
+import mysql.connector as m
+conn=m.connect(host='localhost', user='root', passwd='1234',database='imp')
+c=conn.cursor()
+d=1
+while (d==1):
+    print("Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries\n to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!")
+    print("let's get started!!!!!!!!!!")
+    print('1. Show all records')
+    print('2. Show the machine in ascending order of prize')
+    print('3. Show the most expensive machine')
+    print('4. Insert records')
+    print('5. Delete a record')
+    print('6. Search a machine')
+    print('7. Change Company of a machine')
+    print('8. Find which machine is better for you')
+    print('9. Exit')
+    print()
+    x=int(input('Enter your choice = '))
+    if (x==1):
+        c.execute('select * from comp')
+        r=c.fetchall()
+        gh='%10s %15s %20s %25s'
+        print(gh%('Company','Model','RAM(in GB)','Prize'))
+        print('='*80)
+        ty='%10s %15s %20s %25s'
+        for i in r:
+            print(ty%(i[0],i[1],i[2],i[3]))
+            print('-'*80)
+    elif (x==2):
+        c.execute('select * from comp group by prize')
+        t=c.fetchall()
+        ui='%10s %15s %20s %25s'
+        print(ui%('Company','Model','RAM(in GB)','Prize'))
+        print('='*80)
+        yu='%10s %15s %20s %25s'
+        for i in t:
+            print(yu%(i[0],i[1],i[2],i[3]))
+            print('-'*80)
+    elif (x==3):
+        c.execute('select * from comp where prize in(select max(prize) from comp)')        
+        d=c.fetchone()
+        uo='%10s %15s %20s %25s'
+        print(uo%('Company','Model','RAM(in GB)','Prize'))
+        print('='*80)
+        rt='%10s %15s %20s %25s'
+        print(rt%(d[0],d[1],d[2],d[3]))
+        print('-'*80)
+    elif (x==4):
+        v=input("Enter Company = ")
+        h=input('Enter Model = ')
+        b=int(input('Enter RAM(in GB) = '))
+        j=int(input('Enter prize = '))
+        c.execute('insert into comp values("{}","{}","{}","{}")'.format(v,h,b,j))
+        conn.commit()
+    elif (x==5):
+        o=input("Enter the model for which you want to delete the record = ")
+        c.execute('delete from comp where model="{}"'.format(o))
+        conn.commit()
+    elif (x==6):
+        l=input("Enter the model for which you want to fetch the record = ")
+        c.execute('select * from comp where model="{}"'.format(l))
+        g=c.fetchone()
+        rt='%10s %15s %20s %25s'
+        print(rt%('Company','Model','RAM(in GB)','Prize'))
+        print('='*80)
+        io='%10s %15s %20s %25s'
+        print(io%(g[0],g[1],g[2],g[3]))        
+        print('-'*80)
+    elif (x==7):
+        hu=input("Enter the model for which you want to change the company = ")
+        op=input("Enter new company name for selected machine = ")
+        c.execute('update comp set Company="{}" where Model={}'.format(op,hu))
+        conn.commit()
+    elif (x==8):
+        lk=int(input("Enter your budget = "))
+        c.execute('select Company,Model,RAM_in_GB,Prize, if(prize>=25000 and prize<="{}","Suitable For You","Not Suitable for you") "Recommended" from comp'.format(lk))
+        ol=c.fetchall()
+        tj='%10s %15s %20s %25s %30s'
+        print(tj%('Company','Model','RAM(in GB)','Prize','Recommended'))
+        print('='*110)
+        ul='%10s %15s %20s %25s %30s'
+        for i in ol:
+            print(ul%(i[0],i[1],i[2],i[3],i[4]))
+            print('-'*110)
+    elif (x==9):
+        c.execute('exit')
+        conn.commit()
+    else:
+        print("Please enter values from 1 to 9 only")
+        
+    
+            
+#  OUTPUT
+
+#  OPERATION 1
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 1
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+      Dell          40JZ5L                    4                     28000
+--------------------------------------------------------------------------------
+       H.P          W0J67L                   16                     75000
+--------------------------------------------------------------------------------
+     Apple          87F67U                    8                    200000
+--------------------------------------------------------------------------------
+      Asus          6GI94R                   32                    500000
+--------------------------------------------------------------------------------
+    Lenovo          YOI5GH                    4                     25000
+--------------------------------------------------------------------------------
+     iball          68JOP4                    4                     30000        
+--------------------------------------------------------------------------------
+
+# ALL RECORDS DISPLAYED
+
+
+
+#  OPERATION 2
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 2
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+    Lenovo          YOI5GH                    4                     25000
+--------------------------------------------------------------------------------
+      Dell          40JZ5L                    4                     28000
+--------------------------------------------------------------------------------
+     iball          68JOP4                    4                     30000
+--------------------------------------------------------------------------------
+       H.P          W0J67L                   16                     75000
+--------------------------------------------------------------------------------
+     Apple          87F67U                    8                    200000
+--------------------------------------------------------------------------------
+      Asus          6GI94R                   32                    500000
+--------------------------------------------------------------------------------
+
+# RECORDS DISPLAYED IN ASCENDING ORDER OF PRIZE
+
+
+
+#  OPERATION 3
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 3
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+      Asus          6GI94R                   32                    500000
+--------------------------------------------------------------------------------
+
+# MOST EXPENSIVE MACHINE DISPLAYED
+
+
+
+#  OPERATION 4
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 4
+
+Enter Company = Huawei
+Enter Model = 6GUL9B
+Enter RAM(in GB) = 8
+Enter prize = 50000
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+      Dell          40JZ5L                    4                     28000
+--------------------------------------------------------------------------------
+       H.P          W0J67L                   16                     75000
+--------------------------------------------------------------------------------
+     Apple          87F67U                    8                    200000
+--------------------------------------------------------------------------------
+      Asus          6GI94R                   32                    500000
+--------------------------------------------------------------------------------
+    Lenovo          YOI5GH                    4                     25000
+--------------------------------------------------------------------------------
+     iball          68JOP4                    4                     30000
+--------------------------------------------------------------------------------
+    Huawei          6GUL9B                    8                     50000
+--------------------------------------------------------------------------------
+
+#  HUAWEI COMPANY HAS BEEN ADDED
+
+
+
+#  OPERATION 5
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 5
+
+Enter the model for which you want to delete the record = 6GUL9B
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+      Dell          40JZ5L                    4                     28000
+--------------------------------------------------------------------------------
+       H.P          W0J67L                   16                     75000
+--------------------------------------------------------------------------------
+     Apple          87F67U                    8                    200000
+--------------------------------------------------------------------------------
+      Asus          6GI94R                   32                    500000
+--------------------------------------------------------------------------------
+    Lenovo          YOI5GH                    4                     25000
+--------------------------------------------------------------------------------
+     iball          68JOP4                    4                     30000
+--------------------------------------------------------------------------------
+
+#  HUAWEI COMPANY HASS BEEN REMOVED
+
+
+
+#  OPERATION 6
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 6
+
+Enter the model for which you want to fetch the record = 87F67U
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+     Apple          87F67U                    8                    200000
+--------------------------------------------------------------------------------
+
+#  APPLE'S RECORD HAS BEEN DISPLAYED
+
+
+
+# OPERATION 7
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 7
+
+Enter the model for which you want to change the company = '68JOP4'
+Enter new company name for selected machine = Huawei
+
+
+   Company           Model           RAM(in GB)                     Prize
+================================================================================
+      Dell          40JZ5L                    4                     28000
+--------------------------------------------------------------------------------
+       H.P          W0J67L                   16                     75000
+--------------------------------------------------------------------------------
+     Apple          87F67U                    8                    200000
+--------------------------------------------------------------------------------
+      Asus          6GI94R                   32                    500000
+--------------------------------------------------------------------------------
+    Lenovo          YOI5GH                    4                     25000
+--------------------------------------------------------------------------------
+    Huawei          68JOP4                    4                     30000
+--------------------------------------------------------------------------------
+
+#  iBALL HAS BEEN REPLACED WITH HUAWEI
+
+
+
+#  OPERATION 8
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 8
+
+Enter your budget = 78956
+
+   Company           Model           RAM(in GB)                     Prize                    Recommended
+==============================================================================================================
+      Dell          40JZ5L                    4                     28000               Suitable For You
+--------------------------------------------------------------------------------------------------------------
+       H.P          W0J67L                   16                     75000               Suitable For You
+--------------------------------------------------------------------------------------------------------------
+     Apple          87F67U                    8                    200000           Not Suitable for you
+--------------------------------------------------------------------------------------------------------------
+      Asus          6GI94R                   32                    500000           Not Suitable for you
+--------------------------------------------------------------------------------------------------------------
+    Lenovo          YOI5GH                    4                     25000               Suitable For You
+--------------------------------------------------------------------------------------------------------------
+    Huawei          68JOP4                    4                     30000               Suitable For You
+--------------------------------------------------------------------------------------------------------------
+
+#  MACHINES RECOMMENDED UNDER SPECIFIED BUDGET - 78956
+
+
+
+#  OPERATION 9
+
+Hello!!!! Welcome to my program.Here, we are going to do certain MySQL queries
+ to test my programming skills.So, I just want you to enter some few things that will be asked from you!!!
+let's get started!!!!!!!!!!
+1. Show all records
+2. Show the machine in ascending order of prize
+3. Show the most expensive machine
+4. Insert records
+5. Delete a record
+6. Search a machine
+7. Change Company of a machine
+8. Find which machine is better for you
+9. Exit
+
+Enter your choice = 9
+
+#  EXIT
